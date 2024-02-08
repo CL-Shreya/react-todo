@@ -13,48 +13,37 @@ import {
 import TaskList from "./List/TaskList";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import TaskForm from "./TaskForm/TaskForm";
+import TodoProvider from "./TodoProvider";
+import CompletedTaskList from "./List/CompletedTaskList";
 
 initializeIcons();
 
-export const TodoContext = createContext<ITodoContext>({
-  activeTasks: [],
-  dispatch: () => {},
-});
-const reducer = (state: ITodoState, action: IReducerAction) :ITodoState=> {
-  switch (action.type) {
-    case ActionTypeEnum.Add:
-      const { data } = action;
+// const reducer = (state: ITodoState, action: IReducerAction): ITodoState => {
+//   switch (action.type) {
+//     case ActionTypeEnum.Add:
+//       const { data } = action;
 
-      return { ...state, activeTasks: [data, ...state.activeTasks] };
-    case ActionTypeEnum.Delete:
-      const activeTasks: ITask[] = JSON.parse(
-        JSON.stringify(state.activeTasks)
-      );
-    
-      const filteredData = activeTasks.filter(
-        (task) => task.id !== action.data.id
-      );
-      return { ...state, activeTasks: filteredData };
-    case ActionTypeEnum.Update:
-      const activeTask: ITask[] = JSON.parse(JSON.stringify(state.activeTasks));
+//       return { ...state, activeTasks: [data, ...state.activeTasks] };
+//     case ActionTypeEnum.Delete:
+//       const activeTasks: ITask[] = JSON.parse(
+//         JSON.stringify(state.activeTasks)
+//       );
 
-      const filteredUpdate = activeTask.filter(
-        (task) => task.id !== action.data.id
-      );
-     
-      return { ...state, activeTasks: filteredUpdate };
-      // const activeTask: ITask[] = JSON.parse(JSON.stringify(state.activeTasks));
-      // const filteredUpdate = activeTask.findIndex(
-      //   (task) => task.id === action.data.id
-      // );
-      // if (filteredUpdate !== -1) {
-      //   activeTask[filteredUpdate] = action.data;
-      // }
-      
-      // return { ...state, activeTasks: filteredUpdate };
-  }
-  return { ...state };
-};
+//       const filteredData = activeTasks.filter(
+//         (task) => task.id !== action.data.id
+//       );
+//       return { ...state, activeTasks: filteredData };
+//     case ActionTypeEnum.Update:
+//       const activeTask: ITask[] = JSON.parse(JSON.stringify(state.activeTasks));
+
+//       const filteredUpdate = activeTask.filter(
+//         (task) => task.id !== action.data.id
+//       );
+
+//       return { ...state, activeTasks: filteredUpdate };
+//   }
+//   return { ...state };
+// };
 
 const Home = () => {
   const [selectedKey, setSelectedKey] = useState<string>(PivotKeysEnum.Tasks);
@@ -63,40 +52,13 @@ const Home = () => {
     setEditTaskId(id);
     setSelectedKey(PivotKeysEnum.TaskForm);
   };
-  const tasks: ITask[] = [
-    {
-      id: "1",
-      title: "Task1",
-      description: "Description for Task 1",
-      selectDate: new Date("2024-02-21"),
-      status: "In Progress",
-    },
-    {
-      id: "2",
-      title: "Task2",
-      selectDate: new Date("2024-02-22"),
-      status: "In Progress",
-    },
-    {
-      id: "3",
-      title: "Task3",
-      description: "Description for Task 3",
-      selectDate: new Date("2024-02-12"),
-      status: "In Progress",
-    },
-  ];
-  const data:ITodoState = { activeTasks: tasks,  
-    completedTasks: []};
 
-
-    console.log("Lets see",data);
-  const [state, dispatch] = useReducer(reducer, data);
+ 
+  
 
   return (
     <Stack className={HomeStyle.todoContainer}>
-      <TodoContext.Provider
-        value={{ activeTasks: state.activeTasks, dispatch }}
-      >
+      <TodoProvider>
         <header className={HomeStyle.headerStyle}>TodoList</header>
         <Stack className={HomeStyle.pivotContainer}>
           <Pivot
@@ -116,11 +78,11 @@ const Home = () => {
               <TaskForm editTaskId={editTaskId} />
             </PivotItem>
             <PivotItem headerText="Completed" itemKey={PivotKeysEnum.Completed}>
-              <Label>Pivot #3</Label>
+             <CompletedTaskList/>
             </PivotItem>
           </Pivot>
         </Stack>
-      </TodoContext.Provider>
+      </TodoProvider>
     </Stack>
   );
 };

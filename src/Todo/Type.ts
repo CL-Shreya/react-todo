@@ -16,8 +16,9 @@ export interface ITask{
 
  }
  export interface ITodoContext{
-    activeTasks:ITask[]
-    dispatch:Dispatch< any>
+    activeTasks:ITask[];
+    completedTasks:ITask[];
+    dispatch:Dispatch< any>;
 }
 export interface ITodoState{
     activeTasks:ITask[];
@@ -26,20 +27,26 @@ export interface ITodoState{
 export enum ActionTypeEnum{
     Add,
     Delete,
-    Update
+    Update,
+    Completed,
+    DeleteCompletedTask
 }
-export type IReducerAction= IAddAction|IDeleteAction|IUpdateAction
+export type IReducerAction= IAddAction|IDeleteAction|IUpdateAction|ICompletedAction
 export interface IAddAction{
     type:ActionTypeEnum.Add;
     data:ITask;
 }
 export interface IDeleteAction{
     id: string
-    data: any
-    type:ActionTypeEnum.Delete,
-    Data:{id:string}
+    
+    type:ActionTypeEnum.Delete|ActionTypeEnum.DeleteCompletedTask,
+    data:{id:string}
 }
 export interface IUpdateAction{
     type:ActionTypeEnum.Update,
     data:ITask;
+}
+export interface ICompletedAction{
+    type:ActionTypeEnum.Completed,
+    data:{id:string}
 }

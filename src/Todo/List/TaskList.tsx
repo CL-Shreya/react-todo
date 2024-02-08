@@ -1,25 +1,33 @@
 import React, { useContext } from 'react'
 import TaskListStyle from './TaskList.style';
 import { Checkbox, FontIcon, Stack } from '@fluentui/react';
-import { TodoContext } from '../Home';
+
 import { ActionTypeEnum, ITask } from '../Type';
 import TaskDescription from './TaskDescription';
+import { TodoContext } from '../TodoProvider';
+
 type Props={
   setEditTask:(taskId:string)=>void
 }
-
 const TaskList = ({setEditTask}:Props) => {
 
 const {activeTasks,dispatch}=useContext(TodoContext)
+
+
 const onTaskDelete=(id:string)=>{
   if(window.confirm("Are you sure, you want to delete?")){
   dispatch({type:ActionTypeEnum.Delete,data:{id}})
   }
 }
+const checkboxClickHnd=(id:string)=>{
+  dispatch({type:ActionTypeEnum.Completed,data:{id}})
+}
 const onRenderCell =(task:ITask)=>{
     return<Stack horizontal key={task.id} className={TaskListStyle.taskItem}>
         <Stack horizontal style={{width:"85%"}}>
-        <Checkbox/>
+        <Checkbox onChange={()=>{
+            checkboxClickHnd(task.id)
+        }}/>
         {task.title}
         </Stack>
        
