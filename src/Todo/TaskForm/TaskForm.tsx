@@ -45,7 +45,7 @@ const TaskForm = ({ editTaskId }: Props) => {
   useEffect(() => {
     if (editTaskId) {
       const taskData = activeTasks.find((task) => task.id === editTaskId);
-
+        console.log("Task Data",taskData);
       if (taskData) {
         title.set(taskData?.title || "");
         description.set(taskData?.description || "");
@@ -112,14 +112,14 @@ const TaskForm = ({ editTaskId }: Props) => {
         status: status,
       },
     });
+    console.log("Added Task",title.value,description.value,selectDate,status)
     setShowMessage({ type: MessageBarType.success, message: "Task Added" });
     title.set("");
     description.set("");
   };
   const updateTaskAction = () => {
-    console.log("ID",editTaskId,activeTasks)
+    console.log("ID", editTaskId, activeTasks);
     const taskData = activeTasks.find((task) => task.id === editTaskId);
-    
 
     if (taskData) {
       console.log(taskData.id);
@@ -153,7 +153,7 @@ const TaskForm = ({ editTaskId }: Props) => {
       <Dropdown
         label="Status"
         defaultSelectedKey="inProgress"
-        // selectedKey={description}
+        //selectedKey={description}
         options={options}
         disabled={true}
         styles={dropdownStyles}

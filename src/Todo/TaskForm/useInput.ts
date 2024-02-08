@@ -6,6 +6,7 @@ const useInput=(initialValue:string)=>{
     const onChange=( event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 setValue(event?.currentTarget.value)
     };
+    
     const set=(data:string)=>{
         setValue(data)
     }
