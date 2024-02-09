@@ -167,6 +167,7 @@ const TaskForm = ({ editTaskId }: Props) => {
         className={styles.control}
         strings={defaultDatePickerStrings}
         onSelectDate={handleSelectDate}
+        value={selectDate||new Date()}
       />
       <Stack horizontal tokens={{ childrenGap: 20 }} style={{ marginTop: 20 }}>
         <Stack style={{ width: "80% " }}>
